@@ -1,0 +1,20 @@
+#取中国地图，google的3种样式和osm的样式为例
+library(ggmap)
+library(ggplot2)
+#qmap:快速画图，整合get_map+ggmap
+#get_map:获取地图函数，可基于位置名称和经纬度获取地图
+#ggmap:主要画图函数，可对比参考ggplot
+qmap("CN",zoom=4,source="google",maptype="terrain")
+qmap("CN",zoom=4,source="google",maptype="roadmap")
+qmap("CN",zoom=4,source="google",maptype="hybrid")
+qmap("CN",zoom=4,source="osm")
+#地图为底布，建议尽量选简洁干净的，推荐2，Google-roadmap
+#如果需要基于省画地图的话，需要搞定各省的经纬度
+#抓取维基百科页面中国各省名称及code，获取经纬度
+install.packages("XML")
+library(XML) 
+u<-"http://en.wikipedia.org/wiki/ISO_3166-2:CN"
+table<-readHTMLTable(u,stringsAsFactors = FALSE)[1]
+df<-as.data.frame(table[[1]])
+dfm<-cbind(df,geocode(df$Code))
+head(dfm)
